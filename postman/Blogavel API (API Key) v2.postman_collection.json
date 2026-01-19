@@ -1,0 +1,525 @@
+{
+  "info": {
+    "name": "Blogavel API (API Key) v2",
+    "_postman_id": "d8a0d9ef-7d41-4d55-98c2-1e4f8b23a211",
+    "description": "Full Blogavel API collection (API key mode).\n\nAdmin endpoints require an API key header (default X-API-KEY).\nEnv vars: base_url, route_prefix, api_version, api_key_header, api_key, post_slug, post_id, category_slug, category_id, tag_slug, tag_id, comment_id, comment_status, media_id, media_file.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": {
+              "raw": "{{base_url}}/api/{{route_prefix}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{route_prefix}}", "health"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Public",
+      "item": [
+        {
+          "name": "Posts",
+          "item": [
+            {
+              "name": "List Posts",
+              "request": {
+                "method": "GET",
+                "header": [{ "key": "Accept", "value": "application/json" }],
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/posts",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "posts"]
+                }
+              }
+            },
+            {
+              "name": "Get Post (by slug)",
+              "request": {
+                "method": "GET",
+                "header": [{ "key": "Accept", "value": "application/json" }],
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/posts/{{post_slug}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "posts", "{{post_slug}}"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Categories",
+          "item": [
+            {
+              "name": "List Categories",
+              "request": {
+                "method": "GET",
+                "header": [{ "key": "Accept", "value": "application/json" }],
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/categories",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "categories"]
+                }
+              }
+            },
+            {
+              "name": "Get Category (by slug)",
+              "request": {
+                "method": "GET",
+                "header": [{ "key": "Accept", "value": "application/json" }],
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/categories/{{category_slug}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "categories", "{{category_slug}}"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Tags",
+          "item": [
+            {
+              "name": "List Tags",
+              "request": {
+                "method": "GET",
+                "header": [{ "key": "Accept", "value": "application/json" }],
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/tags",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "tags"]
+                }
+              }
+            },
+            {
+              "name": "Get Tag (by slug)",
+              "request": {
+                "method": "GET",
+                "header": [{ "key": "Accept", "value": "application/json" }],
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/tags/{{tag_slug}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "tags", "{{tag_slug}}"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Comments",
+          "item": [
+            {
+              "name": "List Comments for Post (approved)",
+              "request": {
+                "method": "GET",
+                "header": [{ "key": "Accept", "value": "application/json" }],
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/posts/{{post_slug}}/comments",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "posts", "{{post_slug}}", "comments"]
+                }
+              }
+            },
+            {
+              "name": "Create Comment for Post (pending)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Accept", "value": "application/json" },
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"content\": \"Hello from Postman\",\n  \"guest_name\": \"Jane\",\n  \"guest_email\": \"jane@example.com\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/posts/{{post_slug}}/comments",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "posts", "{{post_slug}}", "comments"]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Posts",
+          "item": [
+            {
+              "name": "List Posts (admin)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Accept", "value": "application/json" },
+                  { "key": "{{api_key_header}}", "value": "{{api_key}}" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/admin/posts",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "admin", "posts"]
+                }
+              }
+            },
+            {
+              "name": "Get Post (admin, by id)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Accept", "value": "application/json" },
+                  { "key": "{{api_key_header}}", "value": "{{api_key}}" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/admin/posts/{{post_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "admin", "posts", "{{post_id}}"]
+                }
+              }
+            },
+            {
+              "name": "Create Post",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Accept", "value": "application/json" },
+                  { "key": "Content-Type", "value": "application/json" },
+                  { "key": "{{api_key_header}}", "value": "{{api_key}}" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Postman Post\",\n  \"status\": \"draft\",\n  \"content\": \"Created via Postman\",\n  \"category_id\": {{category_id}},\n  \"tags\": [{{tag_id}}]\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/admin/posts",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "admin", "posts"]
+                }
+              }
+            },
+            {
+              "name": "Update Post (by id)",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  { "key": "Accept", "value": "application/json" },
+                  { "key": "Content-Type", "value": "application/json" },
+                  { "key": "{{api_key_header}}", "value": "{{api_key}}" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Updated Postman Post\",\n  \"status\": \"draft\",\n  \"content\": \"Updated via Postman\",\n  \"category_id\": {{category_id}},\n  \"tags\": [{{tag_id}}]\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/admin/posts/{{post_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "admin", "posts", "{{post_id}}"]
+                }
+              }
+            },
+            {
+              "name": "Delete Post (by id)",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  { "key": "Accept", "value": "application/json" },
+                  { "key": "{{api_key_header}}", "value": "{{api_key}}" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/admin/posts/{{post_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "admin", "posts", "{{post_id}}"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Categories",
+          "item": [
+            {
+              "name": "List Categories (admin)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Accept", "value": "application/json" },
+                  { "key": "{{api_key_header}}", "value": "{{api_key}}" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/admin/categories",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "admin", "categories"]
+                }
+              }
+            },
+            {
+              "name": "Get Category (admin, by id)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Accept", "value": "application/json" },
+                  { "key": "{{api_key_header}}", "value": "{{api_key}}" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/admin/categories/{{category_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "admin", "categories", "{{category_id}}"]
+                }
+              }
+            },
+            {
+              "name": "Create Category",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Accept", "value": "application/json" },
+                  { "key": "Content-Type", "value": "application/json" },
+                  { "key": "{{api_key_header}}", "value": "{{api_key}}" }
+                ],
+                "body": { "mode": "raw", "raw": "{\n  \"name\": \"New Category\"\n}" },
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/admin/categories",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "admin", "categories"]
+                }
+              }
+            },
+            {
+              "name": "Update Category (by id)",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  { "key": "Accept", "value": "application/json" },
+                  { "key": "Content-Type", "value": "application/json" },
+                  { "key": "{{api_key_header}}", "value": "{{api_key}}" }
+                ],
+                "body": { "mode": "raw", "raw": "{\n  \"name\": \"Updated Category\"\n}" },
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/admin/categories/{{category_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "admin", "categories", "{{category_id}}"]
+                }
+              }
+            },
+            {
+              "name": "Delete Category (by id)",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  { "key": "Accept", "value": "application/json" },
+                  { "key": "{{api_key_header}}", "value": "{{api_key}}" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/admin/categories/{{category_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "admin", "categories", "{{category_id}}"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Tags",
+          "item": [
+            {
+              "name": "List Tags (admin)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Accept", "value": "application/json" },
+                  { "key": "{{api_key_header}}", "value": "{{api_key}}" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/admin/tags",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "admin", "tags"]
+                }
+              }
+            },
+            {
+              "name": "Get Tag (admin, by id)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Accept", "value": "application/json" },
+                  { "key": "{{api_key_header}}", "value": "{{api_key}}" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/admin/tags/{{tag_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "admin", "tags", "{{tag_id}}"]
+                }
+              }
+            },
+            {
+              "name": "Create Tag",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Accept", "value": "application/json" },
+                  { "key": "Content-Type", "value": "application/json" },
+                  { "key": "{{api_key_header}}", "value": "{{api_key}}" }
+                ],
+                "body": { "mode": "raw", "raw": "{\n  \"name\": \"New Tag\"\n}" },
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/admin/tags",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "admin", "tags"]
+                }
+              }
+            },
+            {
+              "name": "Update Tag (by id)",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  { "key": "Accept", "value": "application/json" },
+                  { "key": "Content-Type", "value": "application/json" },
+                  { "key": "{{api_key_header}}", "value": "{{api_key}}" }
+                ],
+                "body": { "mode": "raw", "raw": "{\n  \"name\": \"Updated Tag\"\n}" },
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/admin/tags/{{tag_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "admin", "tags", "{{tag_id}}"]
+                }
+              }
+            },
+            {
+              "name": "Delete Tag (by id)",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  { "key": "Accept", "value": "application/json" },
+                  { "key": "{{api_key_header}}", "value": "{{api_key}}" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/admin/tags/{{tag_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "admin", "tags", "{{tag_id}}"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Media",
+          "item": [
+            {
+              "name": "Upload Media",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Accept", "value": "application/json" },
+                  { "key": "{{api_key_header}}", "value": "{{api_key}}" }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    { "key": "file", "type": "file", "src": "{{media_file}}" }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/admin/media",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "admin", "media"]
+                }
+              }
+            },
+            {
+              "name": "Delete Media (by id)",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  { "key": "Accept", "value": "application/json" },
+                  { "key": "{{api_key_header}}", "value": "{{api_key}}" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/admin/media/{{media_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "admin", "media", "{{media_id}}"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Comments",
+          "item": [
+            {
+              "name": "List Comments (admin)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Accept", "value": "application/json" },
+                  { "key": "{{api_key_header}}", "value": "{{api_key}}" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/admin/comments?status={{comment_status}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "admin", "comments"],
+                  "query": [{ "key": "status", "value": "{{comment_status}}" }]
+                }
+              }
+            },
+            {
+              "name": "Approve Comment",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Accept", "value": "application/json" },
+                  { "key": "{{api_key_header}}", "value": "{{api_key}}" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/admin/comments/{{comment_id}}/approve",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "admin", "comments", "{{comment_id}}", "approve"]
+                }
+              }
+            },
+            {
+              "name": "Spam Comment",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Accept", "value": "application/json" },
+                  { "key": "{{api_key_header}}", "value": "{{api_key}}" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/admin/comments/{{comment_id}}/spam",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "admin", "comments", "{{comment_id}}", "spam"]
+                }
+              }
+            },
+            {
+              "name": "Delete Comment",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  { "key": "Accept", "value": "application/json" },
+                  { "key": "{{api_key_header}}", "value": "{{api_key}}" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/admin/comments/{{comment_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "{{route_prefix}}", "{{api_version}}", "admin", "comments", "{{comment_id}}"]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

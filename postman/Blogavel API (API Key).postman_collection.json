@@ -1,0 +1,132 @@
+{
+  "info": {
+    "name": "Blogavel API (API Key)",
+    "_postman_id": "c1b32f51-8c62-4c40-a5cf-e73c2c9a2b02",
+    "description": "Blogavel headless API. Admin endpoints require X-API-KEY.\n\nSet BLOGAVEL_API_ADMIN_AUTH=api_key in the Laravel env/config.\nSet environment variables: base_url, route_prefix, api_version, api_key_header, api_key.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Accept", "value": "application/json"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/{{route_prefix}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{route_prefix}}", "health"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Public",
+      "item": [
+        {
+          "name": "List Posts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Accept", "value": "application/json"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/posts",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{route_prefix}}", "{{api_version}}", "posts"]
+            }
+          }
+        },
+        {
+          "name": "Get Post (by slug)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Accept", "value": "application/json"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/posts/{{post_slug}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{route_prefix}}", "{{api_version}}", "posts", "{{post_slug}}"]
+            }
+          }
+        },
+        {
+          "name": "List Approved Comments (threaded)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Accept", "value": "application/json"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/posts/{{post_slug}}/comments",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{route_prefix}}", "{{api_version}}", "posts", "{{post_slug}}", "comments"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin (API key protected)",
+      "item": [
+        {
+          "name": "List Comments (pending)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Accept", "value": "application/json"},
+              {"key": "{{api_key_header}}", "value": "{{api_key}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/admin/comments?status=pending",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{route_prefix}}", "{{api_version}}", "admin", "comments"],
+              "query": [{"key": "status", "value": "pending"}]
+            }
+          }
+        },
+        {
+          "name": "Approve Comment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Accept", "value": "application/json"},
+              {"key": "{{api_key_header}}", "value": "{{api_key}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/admin/comments/{{comment_id}}/approve",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{route_prefix}}", "{{api_version}}", "admin", "comments", "{{comment_id}}", "approve"]
+            }
+          }
+        },
+        {
+          "name": "Create Post",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Accept", "value": "application/json"},
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "{{api_key_header}}", "value": "{{api_key}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Postman API Key Post\",\n  \"status\": \"draft\",\n  \"content\": \"Created via Postman (API key)\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/{{route_prefix}}/{{api_version}}/admin/posts",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{route_prefix}}", "{{api_version}}", "admin", "posts"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
