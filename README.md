@@ -60,9 +60,13 @@ All configuration lives under `config/blogavel.php`.
 
 ### Admin web middleware
 
-`blogavel.admin_middleware` (default: `['web', 'auth']`)
+`blogavel.admin_middleware` (default: `['web', 'blogavel.admin']`)
 
 This middleware is applied to the admin web UI routes.
+
+By default, Blogavel uses a package middleware that redirects unauthenticated users to the Blogavel admin login page.
+
+If you have previously published `config/blogavel.php`, make sure your published config matches this new default (or update it), otherwise you may still be using `auth` and be redirected to your app’s default login route.
 
 ### Manage Blog gate (optional)
 
@@ -72,6 +76,15 @@ Blogavel can register a `manage-blog` Gate and apply it to admin routes.
 - `blogavel.manage_blog_allow_local` (default: `true`)
 - `blogavel.manage_blog_admin_emails` (default: `[]`)
 - `blogavel.manage_blog_admin_ids` (default: `[]`)
+
+Environment variables:
+
+```env
+BLOGAVEL_MANAGE_BLOG_GATE=false
+BLOGAVEL_MANAGE_BLOG_ALLOW_LOCAL=true
+BLOGAVEL_MANAGE_BLOG_ADMIN_EMAILS=
+BLOGAVEL_MANAGE_BLOG_ADMIN_IDS=
+```
 
 When enabled:
 
@@ -140,13 +153,24 @@ Default URLs:
 - Public post page: `/<route_prefix>/<public_posts_prefix>/{post}`
 - Public comment submit: `POST /<route_prefix>/<public_posts_prefix>/{post}/comments`
 
-Admin web UI (default, requires `auth`):
+Admin web UI:
 
 - `/<route_prefix>/<admin_prefix>/posts`
 - `/<route_prefix>/<admin_prefix>/categories`
 - `/<route_prefix>/<admin_prefix>/tags`
 - `/<route_prefix>/<admin_prefix>/media`
 - `/<route_prefix>/<admin_prefix>/comments`
+
+Blogavel admin auth:
+
+- `GET /<route_prefix>/<admin_prefix>/login`
+- `POST /<route_prefix>/<admin_prefix>/login`
+- `POST /<route_prefix>/<admin_prefix>/logout`
+
+Admin profile:
+
+- `GET /<route_prefix>/<admin_prefix>/profile`
+- `PUT /<route_prefix>/<admin_prefix>/profile`
 
 ### API routes
 
@@ -205,6 +229,42 @@ Blogavel uses Eloquent models and ships migrations that create (at least) the fo
 - `blogavel_comments`
 - `blogavel_media`
 - `blogavel_post_tag` (pivot)
+
+## Posts: author + views
+
+Blogavel posts support:
+
+- `author_id` (nullable)
+- `views_count` (unsigned integer, default `0`)
+
+Behavior:
+
+- Creating a post from Blogavel admin (web + API) auto-sets `author_id` to the authenticated user, when available.
+- Viewing a published post (web show + public API show) automatically increments `views_count`.
+
+The API `PostResource` includes `views_count`, and includes an `author` object when the relationship is loaded.
+
+## Commands
+
+### Create a Blogavel admin user
+
+Use the interactive command:
+
+```bash
+php artisan blogavel:make-admin
+```
+
+This command:
+
+- Creates a user using your app’s configured `auth.providers.users.model`.
+- Adds the created user to `BLOGAVEL_MANAGE_BLOG_ADMIN_EMAILS` (or `BLOGAVEL_MANAGE_BLOG_ADMIN_IDS` when using `--use-id`).
+- Enables the `manage-blog` gate via environment configuration.
+
+If you are using config caching, run:
+
+```bash
+php artisan config:clear
+```
 
 ## Development
 

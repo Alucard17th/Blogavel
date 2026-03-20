@@ -3,9 +3,11 @@
 declare(strict_types=1);
 
 use Blogavel\Blogavel\Http\Controllers\Admin\CategoryController;
+use Blogavel\Blogavel\Http\Controllers\Admin\AuthController as AdminAuthController;
 use Blogavel\Blogavel\Http\Controllers\Admin\CommentController as AdminCommentController;
 use Blogavel\Blogavel\Http\Controllers\Admin\MediaController;
 use Blogavel\Blogavel\Http\Controllers\Admin\PostController as AdminPostController;
+use Blogavel\Blogavel\Http\Controllers\Admin\ProfileController;
 use Blogavel\Blogavel\Http\Controllers\Admin\TagController;
 use Blogavel\Blogavel\Http\Controllers\CommentController;
 use Blogavel\Blogavel\Http\Controllers\PostController;
@@ -28,6 +30,12 @@ Route::middleware(['web'])->group(function () {
 
     $adminPrefix = config('blogavel.admin_prefix', 'admin');
     $adminMiddleware = config('blogavel.admin_middleware', ['web', 'auth']);
+
+    Route::prefix($prefix.'/'.$adminPrefix)->group(function () {
+        Route::get('login', [AdminAuthController::class, 'showLogin'])->name('blogavel.admin.login');
+        Route::post('login', [AdminAuthController::class, 'login'])->name('blogavel.admin.login.store');
+        Route::post('logout', [AdminAuthController::class, 'logout'])->name('blogavel.admin.logout');
+    });
 
     if ((bool) config('blogavel.manage_blog_gate', false)) {
         $adminMiddleware = array_values(array_unique(array_merge((array) $adminMiddleware, ['can:manage-blog'])));
@@ -64,5 +72,8 @@ Route::middleware(['web'])->group(function () {
         Route::post('comments/{comment}/approve', [AdminCommentController::class, 'approve'])->name('blogavel.admin.comments.approve');
         Route::post('comments/{comment}/spam', [AdminCommentController::class, 'spam'])->name('blogavel.admin.comments.spam');
         Route::delete('comments/{comment}', [AdminCommentController::class, 'destroy'])->name('blogavel.admin.comments.destroy');
+
+        Route::get('profile', [ProfileController::class, 'edit'])->name('blogavel.admin.profile.edit');
+        Route::put('profile', [ProfileController::class, 'update'])->name('blogavel.admin.profile.update');
     });
 });
