@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Blogavel\Blogavel;
 
+use Blogavel\Blogavel\Console\Commands\BlogavelMakeAdminCommand;
 use Blogavel\Blogavel\Console\Commands\BlogavelDemoCommand;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -20,6 +21,7 @@ final class BlogavelServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 BlogavelDemoCommand::class,
+                BlogavelMakeAdminCommand::class,
             ]);
         }
 

@@ -27,6 +27,8 @@ final class PostController extends Controller
     {
         abort_unless($post->status === 'published', 404);
 
+        $post->increment('views_count');
+
         $post->load(['category', 'tags', 'featuredMedia', 'author']);
 
         return new PostResource($post);

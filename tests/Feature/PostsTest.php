@@ -13,6 +13,23 @@ use Laravel\Sanctum\Sanctum;
 
 final class PostsTest extends TestCase
 {
+    public function test_public_post_show_increments_views_count(): void
+    {
+        $post = Post::create([
+            'title' => 'Published',
+            'slug' => 'published',
+            'content' => '...',
+            'status' => 'published',
+        ]);
+
+        $this->assertSame(0, (int) $post->views_count);
+
+        $response = $this->getJson('/api/blogavel/v1/posts/published');
+
+        $response->assertStatus(200);
+        $this->assertSame(1, (int) $post->refresh()->views_count);
+    }
+
     public function test_public_posts_index_returns_only_published_posts(): void
     {
         Post::create([
