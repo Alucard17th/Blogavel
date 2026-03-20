@@ -22,6 +22,7 @@ final class Post extends Model
         'category_id',
         'featured_media_id',
         'author_id',
+        'views_count',
         'title',
         'slug',
         'content',
@@ -31,6 +32,7 @@ final class Post extends Model
 
     protected $casts = [
         'published_at' => 'datetime',
+        'views_count' => 'integer',
     ];
 
     protected static function booted(): void

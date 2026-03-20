@@ -10,7 +10,7 @@
 /storage/*.key
 /storage/pail
 /vendor
- **/vendor
+**/vendor/
 .DS_Store
 .env
 .env.backup

@@ -20,6 +20,7 @@ final class PostResource extends JsonResource
             'slug' => $this->slug,
             'content' => $this->content,
             'status' => $this->status,
+            'views_count' => $this->views_count,
             'published_at' => optional($this->published_at)?->toISOString(),
             'author' => $this->whenLoaded('author', fn () => [
                 'id' => $this->author?->getAuthIdentifier(),
