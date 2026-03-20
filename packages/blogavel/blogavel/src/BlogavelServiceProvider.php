@@ -6,6 +6,7 @@ namespace Blogavel\Blogavel;
 
 use Blogavel\Blogavel\Console\Commands\BlogavelMakeAdminCommand;
 use Blogavel\Blogavel\Console\Commands\BlogavelDemoCommand;
+use Blogavel\Blogavel\Http\Middleware\BlogavelAdminAuthenticate;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -18,6 +19,8 @@ final class BlogavelServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        $this->app['router']->aliasMiddleware('blogavel.admin', BlogavelAdminAuthenticate::class);
+
         if ($this->app->runningInConsole()) {
             $this->commands([
                 BlogavelDemoCommand::class,

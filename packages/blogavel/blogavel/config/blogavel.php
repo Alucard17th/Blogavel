@@ -7,7 +7,7 @@ return [
 
     'admin_prefix' => 'admin',
 
-    'admin_middleware' => ['web', 'auth'],
+    'admin_middleware' => ['web', 'blogavel.admin'],
 
     'manage_blog_gate' => (bool) env('BLOGAVEL_MANAGE_BLOG_GATE', false),
 
