@@ -7,12 +7,24 @@ namespace Blogavel\Blogavel\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 final class AuthController extends Controller
 {
     public function showLogin()
     {
         if (Auth::check()) {
+            if ((bool) config('blogavel.manage_blog_gate', false) && ! Gate::allows('manage-blog')) {
+                Auth::logout();
+
+                request()->session()->invalidate();
+                request()->session()->regenerateToken();
+
+                return redirect()
+                    ->route('blogavel.admin.login')
+                    ->withErrors(['email' => 'This account is not authorized to manage the blog.']);
+            }
+
             return redirect()->route('blogavel.admin.posts.index');
         }
 
@@ -35,6 +47,17 @@ final class AuthController extends Controller
         }
 
         $request->session()->regenerate();
+
+        if ((bool) config('blogavel.manage_blog_gate', false) && ! Gate::allows('manage-blog')) {
+            Auth::logout();
+
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect()
+                ->route('blogavel.admin.login')
+                ->withErrors(['email' => 'This account is not authorized to manage the blog.']);
+        }
 
         return redirect()->intended(route('blogavel.admin.posts.index'));
     }
