@@ -96,6 +96,7 @@
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             padding: 18px;
+            overflow: hidden;
         }
 
         .header {
