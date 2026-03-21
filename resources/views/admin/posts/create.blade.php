@@ -4,6 +4,43 @@
 
 @push('styles')
     <link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
+    <style>
+        .editor {
+            border: 1px solid rgba(15,23,42,.14);
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(255,255,255,.95);
+        }
+
+        .editor .ql-toolbar.ql-snow {
+            border: 0;
+            border-bottom: 1px solid rgba(15,23,42,.14);
+        }
+
+        .editor .ql-container.ql-snow {
+            border: 0;
+        }
+
+        .editor .ql-toolbar button,
+        .editor .ql-toolbar button:hover,
+        .editor .ql-toolbar button:active {
+            padding: 0;
+            border: 0;
+            background: transparent;
+            border-radius: 4px;
+            box-shadow: none;
+            font-weight: 400;
+        }
+
+        .editor .ql-toolbar button {
+            cursor: pointer;
+        }
+
+        .editor .ql-editor {
+            font-family: inherit;
+            color: var(--text);
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -98,12 +135,15 @@
             <div>
                 <label>Content</label>
                 <textarea id="content" name="content" style="display:none">{{ old('content') }}</textarea>
-                <div id="content-editor" style="min-height:260px">{!! old('content') !!}</div>
+                <div class="editor">
+                    <div id="content-toolbar"></div>
+                    <div id="content-editor" style="min-height:260px">{!! old('content') !!}</div>
+                </div>
                 @error('content')<div class="error">{{ $message }}</div>@enderror
             </div>
         </div>
 
-        <div class="actions" style="margin-top:14px">
+        <div class="actions" style="margin-top:14px; position:relative; z-index:2; background:var(--card); padding-top:10px">
             <button type="submit" class="btn-primary">Save</button>
         </div>
     </form>
@@ -115,6 +155,7 @@
         (function () {
             var editorEl = document.getElementById('content-editor');
             var inputEl = document.getElementById('content');
+            var toolbarEl = document.getElementById('content-toolbar');
             if (!editorEl || !inputEl) return;
 
             function getCsrfToken() {
@@ -168,22 +209,67 @@
                 };
             }
 
+            if (toolbarEl && toolbarEl.children.length === 0) {
+                toolbarEl.innerHTML = [
+                    '<span class="ql-formats">',
+                    '<select class="ql-font"></select>',
+                    '<select class="ql-size"></select>',
+                    '</span>',
+                    '<span class="ql-formats">',
+                    '<select class="ql-header">',
+                    '<option selected></option>',
+                    '<option value="1"></option>',
+                    '<option value="2"></option>',
+                    '<option value="3"></option>',
+                    '<option value="4"></option>',
+                    '<option value="5"></option>',
+                    '<option value="6"></option>',
+                    '</select>',
+                    '</span>',
+                    '<span class="ql-formats">',
+                    '<button class="ql-bold"></button>',
+                    '<button class="ql-italic"></button>',
+                    '<button class="ql-underline"></button>',
+                    '<button class="ql-strike"></button>',
+                    '</span>',
+                    '<span class="ql-formats">',
+                    '<select class="ql-color"></select>',
+                    '<select class="ql-background"></select>',
+                    '</span>',
+                    '<span class="ql-formats">',
+                    '<button class="ql-script" value="sub"></button>',
+                    '<button class="ql-script" value="super"></button>',
+                    '</span>',
+                    '<span class="ql-formats">',
+                    '<button class="ql-list" value="ordered"></button>',
+                    '<button class="ql-list" value="bullet"></button>',
+                    '<button class="ql-indent" value="-1"></button>',
+                    '<button class="ql-indent" value="+1"></button>',
+                    '</span>',
+                    '<span class="ql-formats">',
+                    '<select class="ql-align"></select>',
+                    '<button class="ql-direction" value="rtl"></button>',
+                    '</span>',
+                    '<span class="ql-formats">',
+                    '<button class="ql-blockquote"></button>',
+                    '<button class="ql-code-block"></button>',
+                    '</span>',
+                    '<span class="ql-formats">',
+                    '<button class="ql-link"></button>',
+                    '<button class="ql-image"></button>',
+                    '<button class="ql-video"></button>',
+                    '</span>',
+                    '<span class="ql-formats">',
+                    '<button class="ql-clean"></button>',
+                    '</span>'
+                ].join('');
+            }
+
             var quill = new Quill(editorEl, {
                 theme: 'snow',
                 modules: {
                     toolbar: {
-                        container: [
-                            [{ font: [] }, { size: [] }],
-                            [{ header: [1, 2, 3, 4, 5, 6, false] }],
-                            ['bold', 'italic', 'underline', 'strike'],
-                            [{ color: [] }, { background: [] }],
-                            [{ script: 'sub' }, { script: 'super' }],
-                            [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
-                            [{ direction: 'rtl' }, { align: [] }],
-                            ['blockquote', 'code-block'],
-                            ['link', 'image', 'video'],
-                            ['clean']
-                        ],
+                        container: toolbarEl || '#content-toolbar',
                         handlers: {
                             image: imageHandler
                         }
