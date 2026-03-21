@@ -34,13 +34,22 @@ final class MediaController extends Controller
 
         $path = $file->store($directory, $disk);
 
-        Media::create([
+        $media = Media::create([
             'disk' => $disk,
             'path' => $path,
             'original_name' => $file->getClientOriginalName(),
             'mime_type' => $file->getClientMimeType(),
             'size' => (int) $file->getSize(),
         ]);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'id' => $media->id,
+                'disk' => $media->disk,
+                'path' => $media->path,
+                'url' => Storage::disk($media->disk)->url($media->path),
+            ]);
+        }
 
         return redirect()->route('blogavel.admin.media.index');
     }
